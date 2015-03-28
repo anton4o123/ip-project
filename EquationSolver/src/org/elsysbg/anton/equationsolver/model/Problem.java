@@ -7,12 +7,14 @@ public class Problem {
 	private User user;
 	private Date dateOfCreation;
 	private String problem;
+	private long category;
 	
-	public Problem(long id, User user, Date dateOfCreation, String problem) {
+	public Problem(long id, User user, Date dateOfCreation, String problem, long category) {
 		this.id = id;
 		this.user = user;
 		this.dateOfCreation = dateOfCreation;
 		this.problem = problem;
+		this.category = category;
 	}
 	
 	public long getId() {
@@ -26,5 +28,9 @@ public class Problem {
 	}
 	public String getProblem() {
 		return problem;
+	}
+
+	public long getCategory() {
+		return category;
 	}
 }

@@ -6,8 +6,8 @@ import java.sql.Blob;
 public class Function extends Problem {
 	private Blob graphics;
 	
-	public Function(long id, User user, Date dateOfCreation, String problem) {
-		super(id, user, dateOfCreation, problem);
+	public Function(long id, User user, Date dateOfCreation, String problem, long category) {
+		super(id, user, dateOfCreation, problem, category);
 	}
 	
 	public Blob getGraphics() {
