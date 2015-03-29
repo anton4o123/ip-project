@@ -7,7 +7,7 @@ import org.elsysbg.anton.equationsolver.model.Article;
 
 public class ArticleService {
 	private final List<Article> articles = new LinkedList<Article>();
-	private long lastArticleId;
+	private long lastArticleId = 0;
 	
 	public List<Article> getArticles() {
 		return articles;

@@ -20,11 +20,17 @@ public class Problem {
 	public long getId() {
 		return id;
 	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public User getUser() {
 		return user;
 	}
 	public Date getDateOfCreation() {
 		return dateOfCreation;
+	}
+	public void setDateOfCreation(Date dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
 	}
 	public String getProblem() {
 		return problem;
