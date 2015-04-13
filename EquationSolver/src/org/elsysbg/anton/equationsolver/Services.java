@@ -1,5 +1,8 @@
 package org.elsysbg.anton.equationsolver;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.elsysbg.anton.equationsolver.service.ArticleService;
 import org.elsysbg.anton.equationsolver.service.EquationService;
 import org.elsysbg.anton.equationsolver.service.FunctionService;
@@ -8,6 +11,8 @@ public class Services {
 	private static EquationService equationService;
 	private static FunctionService functionService;
 	private static ArticleService articleService;
+	private static EntityManagerFactory entityManagerFactory;
+	
 	public synchronized static EquationService getEquationService() {
 		if (equationService == null) {
 			equationService = new EquationService();
@@ -34,5 +39,19 @@ public class Services {
 	}
 	public static void setArticleService(ArticleService articleService) {
 		Services.articleService = articleService;
+	}
+	public static EntityManagerFactory getEntityManagerFactory() {
+		if(entityManagerFactory == null) {
+			try {
+				Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			} catch (ClassNotFoundException e) {
+				throw new IllegalStateException("No driver", e);
+			}
+			entityManagerFactory = Persistence.createEntityManagerFactory("EquationSolver");
+		}
+		return entityManagerFactory;
+	}
+	public static void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+		Services.entityManagerFactory = entityManagerFactory;
 	}
 }

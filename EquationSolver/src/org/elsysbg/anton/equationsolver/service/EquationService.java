@@ -1,37 +1,74 @@
 package org.elsysbg.anton.equationsolver.service;
 
-import java.sql.Date;
-import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
+import org.elsysbg.anton.equationsolver.Services;
 import org.elsysbg.anton.equationsolver.model.Equation;
 
 public class EquationService {
-	private final List<Equation> equations = new LinkedList<Equation>();
-	private long lastEquationId = 0;
+	final EntityManagerFactory emf;
+	
+	public EquationService() {
+		emf = Services.getEntityManagerFactory();
+	}
 	
 	public List<Equation> getEquations() {
-		return equations;
+		final EntityManager em = emf.createEntityManager();
+		
+		try {
+			return em.createNamedQuery("allEquations", Equation.class).getResultList();
+		} finally {
+			em.close();
+		}
 	}
 	
 	public Equation getEquation(long equationId) {
-		for (Equation next : equations) {
-			if (next.getId() == equationId) {
-				return next;
-			}
+		final EntityManager em = emf.createEntityManager();
+		
+		try {
+			return em.find(Equation.class, equationId);
+		} finally {
+			em.close();
 		}
-		return null;
 	}
 	
 	public synchronized Equation createEquation(Equation equation) {
-		++lastEquationId;
-		equation.setId(lastEquationId);
-		equation.setDateOfCreation(new Date(System.currentTimeMillis()));
-		return equation;
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		
+		try {
+			tx.begin();
+			em.persist(equation);
+			tx.commit();
+			return equation;
+		} finally {
+			if(tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 	
 	public void deleteEquation(long equationId) {
-		final Equation toBeDeleted = getEquation(equationId);
-		equations.remove(toBeDeleted);
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		
+		try {
+			tx.begin();
+			final Equation fromDb = em.find(Equation.class, equationId);
+			if(fromDb != null) {
+				em.remove(fromDb);
+			}
+			tx.commit();
+		} finally {
+			if(tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 }

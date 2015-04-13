@@ -2,12 +2,34 @@ package org.elsysbg.anton.equationsolver.model;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+
+@Entity(name="Article")
+@NamedQueries({
+	@NamedQuery(name="allArticles", query="Select a from Article a")
+})
 public class Article {
+	@Id
+	@GeneratedValue
 	private long id;
+	
+	@Column(nullable=false)
 	private Date dateOfLastUpdate;
+	
+	@Column(nullable=false, length=100)
 	private String title;
+	
+	@Column(nullable=false, length=10000)
 	private String body;
+	
+	@Column(nullable=false)
 	private long category;
+	
 	public long getId() {
 		return id;
 	}

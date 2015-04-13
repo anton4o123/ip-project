@@ -1,37 +1,74 @@
 package org.elsysbg.anton.equationsolver.service;
 
-import java.sql.Date;
-import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
+import org.elsysbg.anton.equationsolver.Services;
 import org.elsysbg.anton.equationsolver.model.Function;
 
 public class FunctionService {
-	private final List<Function> functions = new LinkedList<Function>();
-	private long lastFunctionId = 0;
+	private final EntityManagerFactory emf;
+	
+	public FunctionService() {
+		emf = Services.getEntityManagerFactory();
+	}
 	
 	public List<Function> getFunctions() {
-		return functions;
+		final EntityManager em = emf.createEntityManager();
+		
+		try {
+			return em.createNamedQuery("allFunctions", Function.class).getResultList();
+		} finally {
+			em.close();
+		}
 	}
 	
 	public Function getFunction(long functionId) {
-		for (Function next : functions) {
-			if (next.getId() == functionId) {
-				return next;
-			}
+		final EntityManager em = emf.createEntityManager();
+		
+		try {
+			return em.find(Function.class, functionId);
+		} finally {
+			em.close();
 		}
-		return null;
 	}
 	
 	public synchronized Function createFunction(Function function) {
-		++lastFunctionId;
-		function.setId(lastFunctionId);
-		function.setDateOfCreation(new Date(System.currentTimeMillis()));
-		return function;
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		
+		try {
+			tx.begin();
+			em.persist(function);
+			tx.commit();
+			return function;
+		} finally {
+			if(tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 	
 	public void deleteFunction(long functionId) {
-		final Function toBeDeleted = getFunction(functionId);
-		functions.remove(toBeDeleted);
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
+		try {
+			tx.begin();
+			final Function fromDb = em.find(Function.class, functionId);
+			if(fromDb != null) {
+				em.remove(fromDb);
+			}
+			tx.commit();
+		} finally {
+			if(tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 }
