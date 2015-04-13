@@ -30,7 +30,7 @@ public class FunctionService {
 		return function;
 	}
 	
-	public void deleteEquation(long functionId) {
+	public void deleteFunction(long functionId) {
 		final Function toBeDeleted = getFunction(functionId);
 		functions.remove(toBeDeleted);
 	}
