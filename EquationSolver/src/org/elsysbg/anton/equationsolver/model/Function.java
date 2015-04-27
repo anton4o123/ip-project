@@ -1,29 +1,33 @@
 package org.elsysbg.anton.equationsolver.model;
 
-import java.sql.Blob;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity(name="Function")
 @NamedQueries({
-	@NamedQuery(name="allFunctions", query="Select f from Article f")
+	@NamedQuery(name="allFunctions", query="Select f from Function f")
 })
 public class Function extends Problem {
 	@Column(nullable=false)
-	private Blob graphics;
+	@Lob
+	private byte[] graphics;
+	
+	public Function() {
+		
+	}
 	
 	public Function(long id, User user, String problem, long category) {
 		super(id, user, problem, category);
 	}
 	
-	public Blob getGraphics() {
+	public byte[] getGraphics() {
 		return graphics;
 	}
 
-	public void setGraphics(Blob graphics) {
+	public void setGraphics(byte[] graphics) {
 		this.graphics = graphics;
 	}
 }

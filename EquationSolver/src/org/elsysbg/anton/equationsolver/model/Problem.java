@@ -3,11 +3,11 @@ package org.elsysbg.anton.equationsolver.model;
 import java.sql.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
-@Entity(name="Problem")
+@MappedSuperclass
 public class Problem {
 	@Id
 	@GeneratedValue
@@ -22,6 +22,10 @@ public class Problem {
 	
 	@Column(nullable=false)
 	private long category;
+	
+	public Problem() {
+		
+	}
 	
 	public Problem(long id, User user, String problem, long category) {
 		this.id = id;
