@@ -11,7 +11,7 @@ import javax.persistence.NamedQuery;
 
 @Entity(name="Article")
 @NamedQueries({
-	@NamedQuery(name="allArticles", query="Select a from Article a")
+	@NamedQuery(name="allArticle", query="Select a from Article a")
 })
 public class Article {
 	@Id

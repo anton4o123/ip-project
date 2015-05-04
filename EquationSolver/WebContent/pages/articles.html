@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="../css/bootstrap.css">
+		<meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1"/>
+		<title>Articles</title>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<nav class="navbar navbar-inverse">
+					<div class="container">
+						<div class="navbar-header">
+							<a class="navbar-brand" href="../index.html">EquationSolver</a>
+						</div>
+						<div class="navbar-collapse">
+							<ul class="nav navbar-nav">
+								<li><a href="articles.html">Articles</a></li>
+								<li><a href="equations.html">Equations</a></li>
+								<li><a href="functions.html">Functions</a></li>
+								<li><a href="#">Help</a></li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+					<h2 class="text-center">Here you can submit articles on various math problems!</h2>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+					<form>
+						<div class="form-group">
+							<label for="category">Category</label>
+							<input name="category" class="form-control" id="category" type="number" step=1 min=1 required>
+						</div>
+						<div class="form-group">
+							<label for="title">Title</label>
+							<input name="title" class="form-control" id="title" type="text" required>
+						</div>
+						<div class="form-group">
+							<label for="body">Body</label>
+							<textarea name="body" class="form-control" id="body" required></textarea>
+						</div>
+						<div class="form-group">
+							<button class="btn btn-default" onclick="post_article();">Submit</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="../libs/jquery-2.1.1.js"></script>
+		<script type="text/javascript" src="../libs/bootstrap.js"></script>
+		<script type="text/javascript" src="../scripts/requestSender.js"></script>
+		<script>
+			"use strict"
+			get_articles();
+		</script>	
+	</body>
+</html>

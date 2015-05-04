@@ -6,14 +6,15 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-@Entity(name="Function")
+@Entity(name="Func")
 @NamedQueries({
-	@NamedQuery(name="allFunctions", query="Select f from Function f")
+	@NamedQuery(name="allFunctions", query="Select f from Func f")
 })
 public class Function extends Problem {
-	@Column(nullable=false)
+	
 	@Lob
-	private byte[] graphics;
+	@Column(nullable=false, length=1024*1024*20)
+	private String graphics;
 	
 	public Function() {
 		
@@ -23,11 +24,11 @@ public class Function extends Problem {
 		super(id, user, problem, category);
 	}
 	
-	public byte[] getGraphics() {
+	public String getGraphics() {
 		return graphics;
 	}
 
-	public void setGraphics(byte[] graphics) {
+	public void setGraphics(String graphics) {
 		this.graphics = graphics;
 	}
 }

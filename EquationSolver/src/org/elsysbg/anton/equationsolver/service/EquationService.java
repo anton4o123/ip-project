@@ -1,5 +1,6 @@
 package org.elsysbg.anton.equationsolver.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,7 +10,7 @@ import javax.persistence.EntityTransaction;
 import org.elsysbg.anton.equationsolver.Services;
 import org.elsysbg.anton.equationsolver.model.Equation;
 
-public class EquationService {
+public class EquationService extends ProblemService {
 	final EntityManagerFactory emf;
 	
 	public EquationService() {
@@ -39,6 +40,16 @@ public class EquationService {
 	public synchronized Equation createEquation(Equation equation) {
 		EntityManager em = emf.createEntityManager();
 		final EntityTransaction tx = em.getTransaction();
+		ArrayList<Double> equationCoefficients = new ArrayList<Double>();
+		String results = "";
+		
+		for (String next : equation.getProblem().split(" ")) {
+			equationCoefficients.add(Double.parseDouble(next));
+		}
+		for (Double next : solveEquation(equationCoefficients)) {
+			results += next + " ";
+		}
+		equation.setSolution(results);
 		
 		try {
 			tx.begin();

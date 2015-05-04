@@ -1,5 +1,6 @@
 package org.elsysbg.anton.equationsolver.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,8 +10,28 @@ import javax.persistence.EntityTransaction;
 import org.elsysbg.anton.equationsolver.Services;
 import org.elsysbg.anton.equationsolver.model.Function;
 
-public class FunctionService {
+public class FunctionService extends ProblemService {
 	private final EntityManagerFactory emf;
+	
+	private String drawGraphics(ArrayList<Double> function) {
+		final double gridOffset = 300;
+		ArrayList<Double> roots = solveEquation(function);
+		double difference = Math.abs(roots.get(0)) + Math.abs(roots.get(roots.size() - 1));
+		double step = difference / 100;
+		String path = "<svg version='1.1' xmlns='http://www.w3.org/2000/svg'>";
+		
+		path += "<line stroke='black' stroke-width='2' x1='150' x2='450' y1='300' y2='300'/>";
+		path += "<line stroke='black' stroke-width='2' x1='300' x2='300' y1='150' y2='450'/>";
+		path += "<path d='M";
+		
+		for (double i = roots.get(0); i <= roots.get(roots.size() - 1); i += step) {
+			path += " L" + (i + gridOffset);
+			path += " " + ((-findValueOfFunction(i, function)) + gridOffset);
+		}
+		
+		path += "' fill='none' strike-width='2' stroke='blue'/></svg>";
+		return path;
+	}
 	
 	public FunctionService() {
 		emf = Services.getEntityManagerFactory();
@@ -39,6 +60,12 @@ public class FunctionService {
 	public synchronized Function createFunction(Function function) {
 		EntityManager em = emf.createEntityManager();
 		final EntityTransaction tx = em.getTransaction();
+		ArrayList<Double> functionCoefficients = new ArrayList<Double>();
+		
+		for (String next : function.getProblem().split(" ")) {
+			functionCoefficients.add(Double.parseDouble(next));
+		}
+		function.setGraphics(drawGraphics(functionCoefficients));
 		
 		try {
 			tx.begin();
